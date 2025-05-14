@@ -34,6 +34,9 @@ Solusi yang akan diajukan adalah sebagai berikut:
 2. Menggunakan metode perhitungan kesamaan antar pengguna (seperti Cosine Similarity atau Pearson Correlation) untuk membangun rekomendasi berbasis objek yang akurat, dan juga memanfaatkan deep learning untuk rekomendasi berdasar pada user lain.
 # Data Understanding
 ---
+
+![Link Dataset](https://www.kaggle.com/datasets/nicoletacilibiu/movies-and-ratings-for-recommendation-system)
+
 Dataset yang meliputi dua file, yaitu `movies.csv` dan `ratings.csv`.
 Masing masing memiliki jumlah data yang berbeda, dimana terdapat 9742 baris pada dataset `movies` dan 100836 baris pada dataset `ratings`
 
@@ -98,7 +101,7 @@ Dataset yang didapatkan didominasi dengan genre Drama, Comedy, Action, Thriller,
 
 # Data Preparation
 ---
-![Link Dataset](https://www.kaggle.com/datasets/nicoletacilibiu/movies-and-ratings-for-recommendation-system)
+
 Tahapan ini berguna untuk mempersiapkan data sebelum di feed ke dalam model. Data Preparation bertujuan untuk menghasilkan data yang lebih bersih, dan menentukan data pipeline yang dapat disesuaikan dengan kebutuhan model. Langkah yang dilakukan dalam Data Preparation adalah sebagia berikut:
 1. Menggabungkan data rating dan film menjadi satu. Merging ini dilakukan berdasarkan pada identifikasi unik film (movieId).
 2. Melakukan eliminasi terhadap data kosong dan duplikat. Data yang memiliki nilai NaN ataupun terduplikasi akan di hapus agar menghindari model yang menangkap noise dalam data.
