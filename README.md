@@ -4,7 +4,8 @@
 Dalam era modern ini, platform **Streaming** berkembang dengan sangat pesat, yang di mulai dari *Youtube*, hingga platform streaming dengan skema berlangganan seperti *Hulu*, *Netflix*, *Disney Plus*, dan *Amazon Prime*, di Indonesia sendiri pun, tidak ketinggalan dengan hadirnya platform seperti *Vidio*.
 
 Platform-platform tersebut, terutama yang menggunakan skema berlangganan, berlomba-lomba menarik customer yang mereka berikan, dengan data yang dirilis oleh *Statista*, hingga pada tahun 2025, platform streaming berlangganan memiliki *market share* sebagai berikut:
-![[US-Video-Streaming-Market-Share-1.png.avif]]
+![Streaming Market Share](gambar/US-Video-Streaming-Market-Share-1.png.avif)
+
 > Sumber diperoleh dari [Evoca.tv](https://evoca.tv/streaming-service-market-share/)
 
 Dengan ini, akan dibutukan sebuah sistem untuk merekomendasikan produk kepada user, dengan harapan user itu dapat tertarik untuk terus berada di model bisnis yang telah ditetapkan, maka dari itu dibuatlah **Sistem Rekomendasi.**
@@ -68,7 +69,7 @@ Masing masing memiliki jumlah data yang berbeda, dimana terdapat 9742 baris pada
 | 50%   | 3.500000      |
 | 75%   | 4.000000      |
 | max   | 5.000000      |
-![[Untitled.png]]
+![[gambar/Untitled.png]]
 *Gambar Distribusi Rating per judul film*
 Bila dibandingkan dengan data yang didapat melalui deskripsi data dan visualisasi data, dapat disimpulkan bahwa rata-rata data disini didominasi oleh rating berkisar 3.5 hingga 5.
 
@@ -85,11 +86,11 @@ Bila dibandingkan dengan data yang didapat melalui deskripsi data dan visualisas
 | 23327 | Schindler's List (1993)                   | 5.0    | 92    |
 | 24186 | Silence of the Lambs, The (1991)          | 5.0    | 92    |
 
-![[Untitled-1.png]]
+![[gambar/Untitled-1.png]]
 *Distribusi keluaran film pertahun*
 Dari visualisasi ini juga didapatkan, film yang di muat dlaam dataset merupakan film dari tahun 1900-an hingga pada tahun 2018.
 
-![[Untitled 1.png]]
+![[gambar/Untitled 1.png]]
 *Distribusi Genre Film*
 Dataset yang didapatkan didominasi dengan genre Drama, Comedy, Action, Thriller, sehingga kita dapat mengekspektasikan bahwa kita akan lebih sering mendapatkan rekomendasi dengan genre tersebut.
 
@@ -258,7 +259,7 @@ $$L=-\frac{N}{1}​∑_{i=1}^{N}​[yi​log(pi​)+(1−yi​)log(1−pi​)]$$
 Dalam collaborative filtering, digunakan klasifikasi biner dikarenakan hanya untuk melihat apakah akun ini cocok dengan user target apa tidak.
 
 Plot loss daripada model:
-![[Untitled 2.png]]
+![[gambar/Untitled 2.png]]
 Bila diperhatikan, secara grafik, perbedaan loss pada train dan test memang terpauk jauh, tetapi ini dikarenakan **scale** dalam grafik yang melakukan zoom terlalu dalam.
 Dari sini, dapat diperoleh 2 kesimpulan terhadap model:
 1. Loss score yang cukup baik untuk validasi dan train, yaitu ada di sekitar 0.6.
