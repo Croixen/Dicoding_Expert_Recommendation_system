@@ -101,7 +101,6 @@ Dataset yang didapatkan didominasi dengan genre Drama, Comedy, Action, Thriller,
 
 # Data Preparation
 ---
-
 Tahapan ini berguna untuk mempersiapkan data sebelum di feed ke dalam model. Data Preparation bertujuan untuk menghasilkan data yang lebih bersih, dan menentukan data pipeline yang dapat disesuaikan dengan kebutuhan model. Langkah yang dilakukan dalam Data Preparation adalah sebagia berikut:
 1. Menggabungkan data rating dan film menjadi satu. Merging ini dilakukan berdasarkan pada identifikasi unik film (movieId).
 2. Melakukan eliminasi terhadap data kosong dan duplikat. Data yang memiliki nilai NaN ataupun terduplikasi akan di hapus agar menghindari model yang menangkap noise dalam data.
@@ -270,6 +269,11 @@ Bila diperhatikan, secara grafik, perbedaan loss pada train dan test memang terp
 Dari sini, dapat diperoleh 2 kesimpulan terhadap model:
 1. Loss score yang cukup baik untuk validasi dan train, yaitu ada di sekitar 0.6.
 2. Dengan score validasi yang konveregen terhadap train tidak memiliki nilai yang terlalu jauh, dapat disimpulkan bahwa model ini tidak mengalami overfitting.
+
+Melihat daripada kedua solution yang telah diberikan,
+1. Penulis telah menerapkan sistem rekomendasi berbasis content-based dan collaborative filtering.
+2. Penulis telah menerapkan cosine similarity dan deep learning dengan hasil presisi dan loss yang baik
+
 # Daftar Referensi
 ---
 [1] Recommendation System, Nvidia, https://www.nvidia.com/en-us/glossary/recommendation-system/. Diakses pada 9 Mei 2025.
