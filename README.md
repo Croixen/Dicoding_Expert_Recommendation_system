@@ -261,6 +261,7 @@ $$L=-\frac{N}{1}​∑_{i=1}^{N}​[yi​log(pi​)+(1−yi​)log(1−pi​)]$$
 Dalam collaborative filtering, digunakan klasifikasi biner dikarenakan hanya untuk melihat apakah akun ini cocok dengan user target apa tidak.
 
 Plot loss daripada model:
+
 ![Loss Graphic](Gambar/Untitled_2.png)
 Bila diperhatikan, secara grafik, perbedaan loss pada train dan test memang terpauk jauh, tetapi ini dikarenakan **scale** dalam grafik yang melakukan zoom terlalu dalam.
 Dari sini, dapat diperoleh 2 kesimpulan terhadap model:
