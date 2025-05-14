@@ -98,6 +98,7 @@ Dataset yang didapatkan didominasi dengan genre Drama, Comedy, Action, Thriller,
 
 # Data Preparation
 ---
+![Link Dataset](https://www.kaggle.com/datasets/nicoletacilibiu/movies-and-ratings-for-recommendation-system)
 Tahapan ini berguna untuk mempersiapkan data sebelum di feed ke dalam model. Data Preparation bertujuan untuk menghasilkan data yang lebih bersih, dan menentukan data pipeline yang dapat disesuaikan dengan kebutuhan model. Langkah yang dilakukan dalam Data Preparation adalah sebagia berikut:
 1. Menggabungkan data rating dan film menjadi satu. Merging ini dilakukan berdasarkan pada identifikasi unik film (movieId).
 2. Melakukan eliminasi terhadap data kosong dan duplikat. Data yang memiliki nilai NaN ataupun terduplikasi akan di hapus agar menghindari model yang menangkap noise dalam data.
@@ -261,7 +262,6 @@ $$L=-\frac{N}{1}​∑_{i=1}^{N}​[yi​log(pi​)+(1−yi​)log(1−pi​)]$$
 Dalam collaborative filtering, digunakan klasifikasi biner dikarenakan hanya untuk melihat apakah akun ini cocok dengan user target apa tidak.
 
 Plot loss daripada model:
-
 ![Loss Graphic](Gambar/Untitled_2.png)
 Bila diperhatikan, secara grafik, perbedaan loss pada train dan test memang terpauk jauh, tetapi ini dikarenakan **scale** dalam grafik yang melakukan zoom terlalu dalam.
 Dari sini, dapat diperoleh 2 kesimpulan terhadap model:
