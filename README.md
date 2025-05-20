@@ -126,7 +126,12 @@ Tahap ini dilakukan agar untuk mendapatkan system atau model dengan generalisasi
 # Modeling and Result
 ---
 ## Content-Based Filtering
-Collaborative filtering adalah teknik dalam sistem rekomendasi yang memprediksi preferensi atau minat pengguna terhadap suatu item (seperti film, produk, lagu, dll.) berdasarkan kesamaan dengan pengguna lain atau pola perilaku sebelumnya.
+Content-based filtering adalah teknik dalam sistem rekomendasi yang menyarankan item kepada pengguna berdasarkan karakteristik item dan preferensi pengguna di masa lalu. Fokus utamanya adalah pada konten atau atribut dari item itu sendiri, bukan pada perilaku pengguna lain.
+
+Cara kerjanya kurang lebih adalah:
+1. Menganalisi Item, seperti genre, pembuat, tahun rilis dari suatu lagu,
+2. Membangun profil pengguna berdasar item-item tersebut,
+3. Merekomendasikan item yang mirip, dengan data yang didapat melalui analisa.
 
 Model pada content-based filtering menggunakan tfidf untuk melakukan embedding ada genre film, yang kemudian setiap kemiripannya akan di hitung menggunakan cosine similarity.
 Metode ini akan menghasilkan hal berikut:
@@ -155,6 +160,12 @@ System ini memiliki maksimal rekomendasi sebanyak 6, tetapi disini kita hanya me
 - Perhitungan nilai cosinus yang menjadi lebih lambat seiring bertambahnya data, ini perlu diperhatikan dalam tahap pemeliharaan.
 ## Collaborative Filtering
 Collaborative filtering adalah teknik dalam sistem rekomendasi yang memprediksi preferensi atau minat pengguna terhadap suatu item (seperti film, produk, lagu, dll.) berdasarkan kesamaan dengan pengguna lain atau pola perilaku sebelumnya.
+
+
+Cara Kerjanya Seperti:
+1. Terdapat 3 user, user tersebut dianalisis daripada apa yang mereka preferensi mereka.
+2. Profil akan dibuat berdasar preferensi mereka, seperti film yang mereka sukai
+3. Setiap user akan direkomendasikan berdasarkan kedekatan perilaku satu user dan user yang lain berdasar pada data yang telah dianalisis. Hal ini dapat dilihat pada youtube yang umumnya memiliki rekomendasi di feed seperti "Penonton Dicoding menyukai ini".
 
 
 Model ini menghasilkan rekomendasi sebagai berikut:
