@@ -54,13 +54,26 @@ df_ratings['rating'].describe()
 df = df_movies.merge(df_ratings, on = 'movieId', how = "left")
 df
 
+df.duplicated().any()
+#Melihat apakah terdapat data yang terduplikasi atau tidak
+
 df.isna().sum()
+#Untuk melihat apakah terdapat data dengan salah satu kolom atau lebih yang
+#merupakan data non angka
 
 rating_group = df.groupby(['title', 'rating']).size().reset_index(name='count')
 rating_group = rating_group.sort_values(by='count', ascending=False)
+
+avg_rating = df.groupby('title')['rating'].mean().reset_index(name='avg_rating')
+
+rating_group = rating_group.merge(avg_rating, on='title')
 rating_group.head(10)
 
-rating_group = df.groupby('title')['rating'].mean().sort_values(ascending=True).reset_index()
+#Melakukan grouping berdasar pada judul dan rating,
+#Grouping ini akan diberikan agregasi untuk mencari jumlah review yang diberikan.
+# Kemudian akan diberikan rata rata dari rating yang diberikan oleh user.
+
+df.isna().sum()
 
 """### Visualisasi"""
 
@@ -96,26 +109,48 @@ plt.xlabel('Year')
 plt.ylabel('Density')
 plt.show()
 
-"""# Preprocessing
+"""## Insight
+Dalam graph yang telah di buat, terdapat beberapa insight yang didapatkan.
+
+- Dataset ini memiliki film yang dimulai sekitar tahun 1900 awal hingga pada sebelum tahun 2020 (sekitar tahun 2018).
+- Dari dataset tersebut, dapat dilihat bahwa film yang paling banyak direview oleh pengguna adalah film dari tahun sekitar 1990 hingga pada tahun 2020, dengan puncaknya ada disekitar tahun 200-an
+- Genre yang paling sering ditonton oleh pengguna adalah genre Drama. Diikuti dengan Komedi, Action, Adventure, Romance, Scifi, dan Crime. Kita mungkin akan sering mendapatkan rekomendasi yang berkisar pada genre ini.
+- User cenderung memberikan rating sekitar 2.5 hingga 4.3.
+
+# Preprocessing
 
 ## Missing Value dan Duplicated
+
+Di tahap ini, jika memang ada nilai yang kosong dan juga nilai duplikat, maka akan dilakukan sebuah treatment terhadap dataset yang ada.
+Pandas sendiri telah memberikan tools bawaan untuk melakukan hal tersebut.
+
+Yakni:
+
+`dropna()` untuk menghapus nilai yang kosong
+
+`drop_duplicates()` untuk menghapus nilai yang duplikat
 """
 
-df.isna().sum()
-
 df = df.dropna()
+#Potonga ini berguna untuk menghapus data yang memiliki kolom kosong dalam baris tersebut
 
-print(df.duplicated().sum())
+df = df.drop_duplicates()
+#Potongan Ini berguna untuk menghapus data yang duplikat
 
 """# Preparasi Untuk Content-Based Collaboration
 
 ## Embedding
-Embed setiap genre dengan tfid
+Embed setiap genre dengan tfid.
+
+Ini dilakukan untuk mengubah untuk mengubah setiap huruf menjadi angka dengan nilai kepentingannya yang disesuaikan pada corpus yang kita miliki.
 """
 
 tfidf_vectorizer = TfidfVectorizer(stop_words='english')
 tfidf_matrix = tfidf_vectorizer.fit_transform(df['genres'])
 tfidf_vectorizer.get_feature_names_out()
+
+#Melakukan embed, kemudian dilakukan pengecekan, fitur apa saja yang didapat
+#melalui proses embedding tersebut.
 
 """## Calculate Distance
 Pengukuran kesamaan menggunakan cosinus
@@ -125,24 +160,44 @@ n_neighbors = 6
 nn_model = NearestNeighbors(n_neighbors=n_neighbors, metric='cosine', algorithm='brute')
 nn_model.fit(tfidf_matrix)
 
+#Dikarenakan colab memiliki memory yang terbatas, dan menggunakan pearson corelation dan
+#Cosine Similarity Function akan membuat muat ram yang berlebihan, maka disini kita
+#akan emnggunakan nearest neighbors dengan algoritma brute force dan pendekatan cosine
+#distance untuk mencari nilai jarak kosinus
+
 distances, indices = nn_model.kneighbors(tfidf_matrix)
 similarities = 1 - distances
+
+#Menghitung kemiripan dengan menggunakan hasil dari fitting model
 
 """## Preparasi Untuk Collaborative Learning"""
 
 user_ids = df["userId"].unique().tolist()
 movie_ids = df["movieId"].unique().tolist()
+#Mengambil id user dan juga film yang memang unik, untuk memastikan tidak adanya
+#nilai yang terduplikasi.
+#Nilai id yang telah diambil tadi di ubah menjadi List.
 
-"""Melakukan encode agar lebih mudah dimasukkan ke model"""
+"""Melakukan encode agar lebih mudah dimasukkan ke model
+
+Ini akan menghasilkan nilai dari yang seperti:
+
+[123,321,223]
+
+menjadi:
+
+[1,2,3]
+"""
 
 user_idx = {x: i for i, x in enumerate(user_ids)}
 movie_idx = {x: i for i, x in enumerate(movie_ids)}
-
+#Melakukan mapping untuk di aplikasikan terhadap indexing dataset
 
 movie_decoded = {i : x for i, x in enumerate(movie_ids)}  #mengubah kembali, untuk inferencing
 
 df["userIdx"] = df["userId"].map(user_idx)
 df["movieIdx"] = df["movieId"].map(movie_idx)
+#Mengaplikasi map yang telah di buat.
 
 df["rating"] = df["rating"].values.astype(np.float32) # konversi menjadi float
 
@@ -163,9 +218,17 @@ print(num_users, "|",num_movies)
 df = df.sample(frac=1, random_state=42)
 df
 
+"""## Membagi dataset
+
+Disini, akan dilakukan pembagian dataset dengan scaling menggunakan minmax scaler, kemudian dataset akan di pecah dengan skala
+
+90%10
+
+
+"""
+
 x = df[["userIdx", "movieIdx"]].values
 y = df["rating"].apply(lambda x: (x - min_rating) / (max_rating - min_rating)).values
-
 #Splice dataste
 split = int(0.9 * df.shape[0])
 x_train, x_val, x_test, y_train, y_val, y_test = (x[:split], x[split:], x[:split], y[:split], y[split:], y[split:])
@@ -225,7 +288,7 @@ precision = calculate_precision(
 
 print(f"Genre-based Precision@5 untuk index 123: {precision:.2f}")
 
-"""Dalam percoaan ini, kita mendapat 4 film yang direkomendasikan.
+"""Dalam percobaan ini, kita mendapat 4 film yang direkomendasikan.
 
 
 Bila diperhatikan, seluruh film ini tidak memiliki hubungan langsung dengan film Untouchables, ini merupakan nilai yang diekspektasikan karena ketika menggunakan tfidf, yang diperhatikan hanyalaah hubungan 1 kalimat ke kalimat yang lain.
@@ -284,6 +347,9 @@ history = model.fit(
     validation_data=(x_val, y_val),
 )
 
+# Melakukan fitting
+# dengan 15 epochs dan 32 batch size
+
 plt.plot(history.history["loss"])
 plt.plot(history.history["val_loss"])
 plt.title("model loss")
@@ -292,21 +358,38 @@ plt.xlabel("epoch")
 plt.legend(["train", "test"], loc="upper left")
 plt.show()
 
-"""# **Inferencing**"""
+"""## Hasil
+Melihat pada hasil, model tidak mengalami overfit, dan memiliki hasil yang cukup baik
 
-# Mengambil Data User secara acak
-user_id = df.userId.sample(1).iloc[0]
+# **Inferencing** || **Collaborative Learning**
+"""
+
+df.columns
+
+# Mengambil Data User
+user_id = 524
+
+#mengambil film yang telah di nonton oleh user
 movies_watched_by_user = df[df.userId == user_id]
+
+#mengambil film yang belum ditonton oleh user
 movies_not_watched = df_movies[~df_movies["movieId"].isin(movies_watched_by_user.movieId.values)]["movieId"]
+
+#Membuatnya menjadi list unique
 movies_not_watched = list(set(movies_not_watched).intersection(set(movie_idx.keys())))
+
+# Mengambil index movie
 movies_not_watched = [[movie_idx.get(x)] for x in movies_not_watched]
+#mengambil index user
 user_encoder = user_idx.get(user_id)
+
+#menggabungkan index user dan film yang belum ditontonnya dan ditumpuk secara horizontal
 user_movie_array = np.hstack(([[user_encoder]] * len(movies_not_watched), movies_not_watched))
 
 print(f"id: {user_id}")
 movies_watched_by_user[movies_watched_by_user['rating'] >= 4].sample(5)
 
-"""Bila diperhaitkan, film yang di sukai oleh pengguna 599 adalah yang bersifat drama, dan thriller/mysteries, dengan mayoritasnya adalah Drama."""
+"""Bila diperhatikan, film yang di sukai oleh pengguna 524 adalah yang bergenre drama, dan thriller/mysteries, dengan mayoritasnya adalah Drama."""
 
 ratings = model.predict(user_movie_array).flatten()
 
@@ -335,4 +418,8 @@ recommended_movies = df_movies[df_movies["movieId"].isin(recommended_movie_ids)]
 for row in recommended_movies.itertuples():
     print(row.title, ":", row.genres)
 
-"""Kita mendapat film yang mayoritasnya drama melalui sistem rekomendasi yang telah dibaut"""
+"""## Kesimpulan Hasil
+Bila diperhatikan, mayoritas daripada rekomendasinya adalah film Drama.
+
+Ini sesuai dengan hipotesis awal, dimana akan sering ditemukan rekomendasi dengan genre Drama.
+"""
